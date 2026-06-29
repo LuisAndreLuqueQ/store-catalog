@@ -11,9 +11,7 @@ export const Home = () => {
 
   if (error)
     return (
-      <div
-        className="flex flex-col items-center py-20 gap-4"
-      >
+      <div className="flex flex-col items-center py-20 gap-4">
         <p className="text-red-500">{error}</p>
         <button
           onClick={() => setUrl("https://fakestoreapi.com/products")}
@@ -25,17 +23,9 @@ export const Home = () => {
     );
 
   return (
-    <div
-      className="container mx-auto p-4"
-    >
-      <h1
-        className="text-2xl font-bold mb-6"
-      >
-        Catálogo de Productos
-      </h1>
-      <div
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
-      >
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">Catálogo de Productos</h1>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
