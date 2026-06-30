@@ -4,6 +4,7 @@ import { Home } from "./pages/Home";
 import { ProductDetail } from "./components/ProductDetail";
 import { NotFound } from "./pages/NotFound";
 import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -27,6 +28,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 }
