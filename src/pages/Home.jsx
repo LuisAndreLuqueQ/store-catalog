@@ -10,10 +10,14 @@ const SORT_OPTIONS = [
   { label: "Price: High to Low", value: "desc" },
 ];
 
-export const Home = ({ search, onSearchChange }) => {
-  const [url, setUrl] = useState("https://fakestoreapi.com/products");
+export const Home = ({ search, category }) => {
   const [sort, setSort] = useState("default");
   const [limit, setLimit] = useState(8);
+
+  const url = category
+    ? `https://fakestoreapi.com/products/category/${category}`
+    : "https://fakestoreapi.com/products";
+
   const { data: products, loading, error } = useFetchProducts(url);
 
   const getSortedProducts = () => {
@@ -44,19 +48,16 @@ export const Home = ({ search, onSearchChange }) => {
         {error && (
           <div className="flex flex-col items-center py-20 gap-4">
             <p className="text-red-500">{error}</p>
-            <button
-              onClick={() => setUrl("https://fakestoreapi.com/products")}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Reintentar
-            </button>
+            <p className="text-sm text-gray-400">Intenta recargar la página</p>
           </div>
         )}
         {!loading && !error && (
           <>
             <div className="flex items-end justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold">Trending Now</h2>
+                <h2 className="text-xl font-bold">
+                  {category ? `Category: ${category}` : "Trending Now"}
+                </h2>
                 <p className="text-sm text-gray-500">Our most popular items this week</p>
               </div>
               <select

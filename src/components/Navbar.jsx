@@ -9,7 +9,7 @@ const CATEGORIES = [
   { label: "Women's", value: "women's clothing" },
 ];
 
-export const Navbar = ({ search, onSearch }) => {
+export const Navbar = ({ search, onSearch, category, onCategory }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -28,7 +28,15 @@ export const Navbar = ({ search, onSearch }) => {
 
         <nav className="hidden md:flex items-center gap-6">
           {CATEGORIES.map((cat) => (
-            <button key={cat.value} className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+            <button
+              key={cat.value}
+              onClick={() => onCategory(category === cat.value ? null : cat.value)}
+              className={`text-sm transition-colors ${
+                category === cat.value
+                  ? "text-blue-600 font-semibold"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
               {cat.label}
             </button>
           ))}
@@ -84,7 +92,15 @@ export const Navbar = ({ search, onSearch }) => {
       {menuOpen && (
         <div className="md:hidden border-t border-gray-100 px-4 py-4 flex flex-col gap-4">
           {CATEGORIES.map((cat) => (
-            <button key={cat.value} onClick={() => setMenuOpen(false)} className="text-sm text-gray-700 text-left hover:text-blue-600">
+            <button
+              key={cat.value}
+              onClick={() => { onCategory(category === cat.value ? null : cat.value); setMenuOpen(false); }}
+              className={`text-sm text-left transition-colors ${
+                category === cat.value
+                  ? "text-blue-600 font-semibold"
+                  : "text-gray-700 hover:text-blue-600"
+              }`}
+            >
               {cat.label}
             </button>
           ))}
