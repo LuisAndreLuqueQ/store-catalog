@@ -10,7 +10,7 @@ const SORT_OPTIONS = [
   { label: "Price: High to Low", value: "desc" },
 ];
 
-export const Home = ({ search, category }) => {
+export const Home = ({ search, category, onCategoryChange }) => {
   const [sort, setSort] = useState("default");
   const [limit, setLimit] = useState(8);
 
@@ -58,17 +58,26 @@ export const Home = ({ search, category }) => {
                 <h2 className="text-xl font-bold">
                   {category ? `Category: ${category}` : "Trending Now"}
                 </h2>
-                <p className="text-sm text-gray-500">Our most popular items this week</p>
+                <p className="hidden md:block text-sm text-gray-500">Our most popular items this week</p>
               </div>
+              {category ? (
+                <button
+                  onClick={() => onCategoryChange(null)}
+                  className="text-sm text-blue-600 hover:underline font-medium"
+                >
+                  See All →
+                </button>
+              ) : (
               <select
                 value={sort}
                 onChange={(e) => { setSort(e.target.value); setLimit(8); }}
-                className="text-sm border border-gray-200 rounded px-3 py-2 outline-none cursor-pointer"
+                className="hidden md:block text-sm border border-gray-200 rounded px-3 py-2 outline-none cursor-pointer"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
                 ))}
               </select>
+              )}
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {visibleProducts.map((product) => (

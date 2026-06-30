@@ -24,7 +24,7 @@ function App() {
         onCategory={handleCategory}
       />
       <Routes>
-        <Route path="/" element={<Home search={search} category={category} />} />
+        <Route path="/" element={<Home search={search} category={category} onCategoryChange={handleCategory} />} />
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
