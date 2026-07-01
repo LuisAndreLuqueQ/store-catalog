@@ -53,7 +53,7 @@ export const Home = ({ search, category, onCategoryChange }) => {
         )}
         {!loading && !error && (
           <>
-            <div className="flex items-end justify-between mb-6">
+            <div className="flex items-end justify-between mb-4">
               <div>
                 <h2 className="text-xl font-bold">
                   {category ? `Category: ${category}` : "Trending Now"}
@@ -68,20 +68,38 @@ export const Home = ({ search, category, onCategoryChange }) => {
                   See All →
                 </button>
               ) : (
-              <select
-                value={sort}
-                onChange={(e) => { setSort(e.target.value); setLimit(8); }}
-                className="hidden md:block text-sm border border-gray-200 rounded px-3 py-2 outline-none cursor-pointer"
-              >
-                {SORT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
+                <select
+                  value={sort}
+                  onChange={(e) => { setSort(e.target.value); setLimit(8); }}
+                  className="hidden md:block text-sm border border-gray-200 rounded px-3 py-2 outline-none cursor-pointer"
+                >
+                  {SORT_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
               )}
             </div>
+
+            {!category && (
+              <div className="flex md:hidden gap-2 mb-6 overflow-x-auto pb-1">
+                {SORT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => { setSort(opt.value); setLimit(8); }}
+                    className={`shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                      sort === opt.value
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "text-gray-600 border-gray-300 hover:border-blue-400"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {visibleProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {visibleProducts.map((product, i) => (
+                <ProductCard key={product.id} product={product} index={i} />
               ))}
             </div>
             {visibleProducts.length === 0 && (

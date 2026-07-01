@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingBag, Search, Heart, ShoppingCart, User, Menu, X } from "lucide-react";
+import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 const CATEGORIES = [
   { label: "Electronics", value: "electronics" },
@@ -9,9 +11,11 @@ const CATEGORIES = [
   { label: "Women's", value: "women's clothing" },
 ];
 
-export const Navbar = ({ search, onSearch, category, onCategory }) => {
+export const Navbar = ({ search, onSearch, category, onCategory, onCartToggle, onFavoritesToggle }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { cartItems } = useCart();
+  const { favorites } = useFavorites();
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -57,15 +61,23 @@ export const Navbar = ({ search, onSearch, category, onCategory }) => {
           <button className="md:hidden" onClick={() => { setSearchOpen(!searchOpen); setMenuOpen(false); }}>
             <Search size={22} className="text-gray-700" />
           </button>
-          <button className="hidden md:block">
+
+          <button className="relative" onClick={onFavoritesToggle}>
             <Heart size={22} className="text-gray-700 hover:text-red-500 transition-colors" />
+            {favorites.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                {favorites.length}
+              </span>
+            )}
           </button>
-          <button className="relative">
+
+          <button className="relative" onClick={onCartToggle}>
             <ShoppingCart size={22} className="text-gray-700" />
             <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              0
+              {cartItems.reduce((sum, i) => sum + i.quantity, 0)}
             </span>
           </button>
+
           <button className="hidden md:flex w-8 h-8 bg-gray-200 rounded-full items-center justify-center">
             <User size={16} className="text-gray-600" />
           </button>

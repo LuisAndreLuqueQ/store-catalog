@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ShoppingCart, ArrowLeft, Star } from "lucide-react";
+import { ShoppingCart, ArrowLeft, Star, Heart } from "lucide-react";
 import { useFetchProducts } from "../hooks/useFetchProducts";
 import { Loading } from "./Loading";
+import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 export const ProductDetail = () => {
   const { id } = useParams();
@@ -9,6 +11,8 @@ export const ProductDetail = () => {
   const { data: product, loading, error } = useFetchProducts(
     `https://fakestoreapi.com/products/${id}`
   );
+  const { addToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   if (loading) return <Loading />;
 
@@ -71,10 +75,28 @@ export const ProductDetail = () => {
             {product.description}
           </p>
 
-          <button className="mt-4 flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded transition-colors w-full md:w-auto">
-            <ShoppingCart size={18} />
-            Add to Cart
-          </button>
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={() => addToCart(product)}
+              className="flex-1 flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded transition-colors"
+            >
+              <ShoppingCart size={18} />
+              Add to Cart
+            </button>
+            <button
+              onClick={() => toggleFavorite(product)}
+              className="flex items-center justify-center w-12 h-12 border border-gray-200 rounded hover:border-red-300 transition-colors"
+            >
+              <Heart
+                size={20}
+                className={`transition-colors ${
+                  isFavorite(product.id)
+                    ? "text-red-500 fill-red-500"
+                    : "text-gray-400 hover:text-red-500"
+                }`}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>
